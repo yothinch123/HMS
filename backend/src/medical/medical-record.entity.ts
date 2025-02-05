@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Patients } from './patient.entity';
-import { User } from './user.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Patients } from '../patient/patient.entity';
+import { User } from '../user/user.entity';
 
 @Entity()
 export class MedicalRecord {
@@ -8,6 +8,7 @@ export class MedicalRecord {
   id: number;
 
   @ManyToOne(() => Patients, patient => patient.medicalRecords)
+  @JoinColumn({ name: "patient_id" })
   patient: Patients;
 
   @Column('text', { nullable: true })
@@ -20,6 +21,7 @@ export class MedicalRecord {
   prescription: string;
 
   @ManyToOne(() => User, user => user.medicalRecords, { nullable: true })
+  @JoinColumn({ name: "doctor_id" })
   doctor: User;
 
   @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })

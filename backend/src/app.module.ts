@@ -1,13 +1,17 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Patients } from './patient.entity';
-import { Appointment } from './appointment.entity';
-import { MedicalRecord } from './medical-record.entity';
-import { User } from './user.entity';
-import { Prescription } from './prescription.entity';
-import { Payment } from './payment.entity';
-import { PatientService } from './patient.service';
-import { PatientController } from './patient.controller';
+import { Patients } from './patient/patient.entity';
+import { Appointment } from './appointment/appointment.entity';
+import { MedicalRecord } from './medical/medical-record.entity';
+import { User } from './user/user.entity';
+import { Prescription } from './prescription/prescription.entity';
+import { Payment } from './payment/payment.entity';
+
+import { PatientService } from './patient/patient.service';
+import { PatientController } from './patient/patient.controller';
+
+import { AppointmentService } from './appointment/appointment.service';
+import { AppointmentController } from './appointment/appointment.controller';
 
 @Module({
   imports: [
@@ -23,7 +27,7 @@ import { PatientController } from './patient.controller';
     }),
     TypeOrmModule.forFeature([Patients, Appointment, MedicalRecord, User, Prescription, Payment]),
   ],
-  controllers: [PatientController],
-  providers: [PatientService],
+  controllers: [PatientController, AppointmentController],
+  providers: [PatientService, AppointmentService],
 })
 export class AppModule {}

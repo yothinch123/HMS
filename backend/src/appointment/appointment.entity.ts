@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Patients } from './patient.entity';
-import { User } from './user.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Patients } from '../patient/patient.entity';
+import { User } from '../user/user.entity';
 
 @Entity()
 export class Appointment {
@@ -8,10 +8,13 @@ export class Appointment {
   id: number;
 
   @ManyToOne(() => Patients, patient => patient.appointments)
+  @JoinColumn({ name: "patient_id" })
   patient: Patients;
 
   @ManyToOne(() => User, user => user.appointments, { nullable: true })
+  @JoinColumn({ name: "doctor_id" })
   doctor: User;
+  
 
   @Column('timestamp')
   appointment_date: Date;

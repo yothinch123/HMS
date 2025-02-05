@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { MedicalRecord } from './medical-record.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { MedicalRecord } from '../medical/medical-record.entity';
 
 @Entity()
 export class Prescription {
@@ -7,6 +7,7 @@ export class Prescription {
   id: number;
 
   @ManyToOne(() => MedicalRecord, medicalRecord => medicalRecord.prescription)
+  @JoinColumn({ name: "record_id" })
   medicalRecord: MedicalRecord;
 
   @Column()

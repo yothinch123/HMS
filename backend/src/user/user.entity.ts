@@ -1,12 +1,20 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Appointment } from './appointment.entity';
-import { MedicalRecord } from './medical-record.entity';
-import { Payment } from './payment.entity';
+import { Appointment } from '../appointment/appointment.entity';
+import { MedicalRecord } from '../medical/medical-record.entity';
 
 @Entity()
-export class Patients {
+export class User {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({ unique: true })
+  username: string;
+
+  @Column('text')
+  password_hash: string;
+
+  @Column()
+  role: string;
 
   @Column({ nullable: true })
   first_name: string;
@@ -15,19 +23,10 @@ export class Patients {
   last_name: string;
 
   @Column({ nullable: true })
-  gender: string;
-
-  @Column('date', { nullable: true })
-  date_of_birth: string;
+  email: string;
 
   @Column({ nullable: true })
   phone_number: string;
-
-  @Column({ nullable: true })
-  email: string;
-
-  @Column('text', { nullable: true })
-  address: string;
 
   @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
@@ -35,12 +34,9 @@ export class Patients {
   @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
   updated_at: Date;
 
-  @OneToMany(() => Appointment, appointment => appointment.patient)
+  @OneToMany(() => Appointment, appointment => appointment.doctor)
   appointments: Appointment[];
 
-  @OneToMany(() => MedicalRecord, medicalRecord => medicalRecord.patient)
+  @OneToMany(() => MedicalRecord, medicalRecord => medicalRecord.doctor)
   medicalRecords: MedicalRecord[];
-
-  @OneToMany(() => Payment, payment => payment.patient_id)
-  payments: Payment[];
 }
