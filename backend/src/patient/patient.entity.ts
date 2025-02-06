@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Appointment } from '../appointment/appointment.entity';
-import { MedicalRecord } from '../medical/medical-record.entity';
+import { MedicalRecord } from '../medical-record/medical-record.entity';
 import { Payment } from '../payment/payment.entity';
 
 @Entity()

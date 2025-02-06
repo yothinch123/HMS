@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { MedicalRecord } from '../medical/medical-record.entity';
+import { MedicalRecord } from '../medical-record/medical-record.entity';
 
 @Entity()
 export class Prescription {
