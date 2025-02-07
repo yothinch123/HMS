@@ -57,5 +57,6 @@ import { AuthModule } from './auth/auth.module';
     PrescriptionService,
     UserService,
   ],
+  exports: [UserService]
 })
 export class AppModule {}
