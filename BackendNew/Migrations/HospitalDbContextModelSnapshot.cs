@@ -28,7 +28,7 @@ namespace backend_new.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Appointmentate")
+                    b.Property<DateTime?>("AppointmentDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("CreatedAt")

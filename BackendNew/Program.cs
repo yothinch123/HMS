@@ -37,6 +37,15 @@ app.MapGet("/patients", async (HospitalDbContext dbContext) =>
 })
 .WithName("GetPatients");
 
+app.MapGet("/users", async (HospitalDbContext dbContext) =>
+{
+    Console.WriteLine($"Get data user");
+    // Console.WriteLine($"Received Patient: {patient.FirstName} {patient.LastName}");
+    var users = await dbContext.Users.ToListAsync();
+    return Results.Ok(users);
+})
+.WithName("GetUsers");
+
 app.MapPost("/patients", async (HospitalDbContext dbContext, Patient patient) =>
 {
     dbContext.Patients.Add(patient);
