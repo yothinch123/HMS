@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BackendNew.Data;
 using BackendNew.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace BackendNew.Controllers
 {
@@ -23,15 +24,18 @@ namespace BackendNew.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Patient>> GetPatient(Guid id)
+        public async Task<IActionResult> GetPatient(Guid id)
         {
             var patient = await _context.Patients.FindAsync(id);
+
             if (patient == null)
             {
-                return NotFound();
+                return NotFound(new ApiResponse<string>(404, null, "Patient not found"));
             }
-            return patient;
+
+            return Ok(new ApiResponse<Patient>(200, patient));
         }
+
 
         [HttpPost]
         public async Task<ActionResult<Patient>> CreatePatient(Patient patient)

@@ -1,7 +1,6 @@
 using BackendNew.Data;
 using BackendNew.Models;
 using Microsoft.EntityFrameworkCore;
-using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,53 +22,50 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
 app.MapGet("/patients", async (HospitalDbContext dbContext) =>
 {
     Console.WriteLine($"Get data patients");
-    // Console.WriteLine($"Received Patient: {patient.FirstName} {patient.LastName}");
     var patients = await dbContext.Patients.ToListAsync();
-    return Results.Ok(patients);
+    if (patients == null || patients.Count == 0)
+    {
+        return Results.NotFound(new ApiResponse<string>(404, null, "No patients found"));
+    }
+    return Results.Ok(new ApiResponse<List<Patient>>(200, patients));
 })
 .WithName("GetPatients");
+
+app.MapGet("/patients/{id}", async (Guid id, HospitalDbContext context) =>
+{
+    var patient = await context.Patients.FindAsync(id);
+    if (patient == null)
+    {
+        return Results.NotFound(new ApiResponse<string>(404, null, "Patient not found"));
+    }
+    return Results.Ok(new ApiResponse<Patient>(200, patient));
+});
 
 app.MapGet("/users", async (HospitalDbContext dbContext) =>
 {
     Console.WriteLine($"Get data user");
-    // Console.WriteLine($"Received Patient: {patient.FirstName} {patient.LastName}");
     var users = await dbContext.Users.ToListAsync();
-    return Results.Ok(users);
+    if (users == null || users.Count == 0)
+    {
+        return Results.NotFound(new ApiResponse<string>(404, null, "No users found"));
+    }
+    return Results.Ok(new ApiResponse<List<User>>(200, users));
 })
 .WithName("GetUsers");
 
 app.MapPost("/patients", async (HospitalDbContext dbContext, Patient patient) =>
 {
+    if (patient == null)
+    {
+        return Results.BadRequest(new ApiResponse<string>(400, null, "Invalid patient data"));
+    }
+
     dbContext.Patients.Add(patient);
     await dbContext.SaveChangesAsync();
-    return Results.Created($"/patients/{patient.Id}", patient);
+    return Results.Created($"/patients/{patient.Id}", new ApiResponse<Patient>(201, patient));
 });
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
-
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
