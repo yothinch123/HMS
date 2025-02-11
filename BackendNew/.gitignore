@@ -1,0 +1,30 @@
+## .NET ##
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Dd]ist/
+[Dd]ev/
+
+# User-specific files
+.vscode/
+.idea/
+*.swp
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# NuGet
+.nuget/
+
+# Bin and obj folders
+bin/
+obj/
+
+# ASP.NET
+iisexpress/
