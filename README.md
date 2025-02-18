@@ -12,6 +12,7 @@
 
 ### Backend:
 - [NestJS](https://nestjs.com/) (Node.js Framework)
+- C# ASP.NET
 - TypeScript
 - PostgreSQL (Relational Database)
 - TypeORM (ORM for Database)
